@@ -1,0 +1,21 @@
+
+body {
+    background-color: oldlace;
+}
+
+.severity_normal {
+    color: black;
+}
+
+.severity_critical {
+    color: white;
+    background-color: red;
+}
+
+.severity_high {
+    background-color: orange;
+}
+
+.severity_medium {
+    background-color: yellow;
+}

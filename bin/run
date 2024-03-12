@@ -1,0 +1,167 @@
+#!/bin/sh
+#
+# This code is part of the Jaudit utilty.
+#
+# (C) Copyright IBM 2023.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+#
+
+prog="$0"
+dir="`dirname \"$prog\"`"
+top="`realpath \"$dir\"/..`"
+scmd_dir="$top/scmd"
+runcmd="$0"
+config="$top/cf/subcommands.cf"
+
+find_sub_cmd()
+{
+  cmd="$1"
+  while read name fname ext mod dep description
+  do
+    [ "$name" != "$cmd" ] && continue
+    echo "$fname" "$ext" "$mod" "$dep"
+    break
+  done < "$config"
+}
+
+list_subcommands()
+{
+  while read name fname ext mod dep description
+  do
+    case "$description" in
+    !*) ;;
+    *) echo "$dep $name $description";;
+    esac
+  done < "$config" |
+  $runcmd submodules status |
+  awk '$1 == "Y" {
+    printf("%-12s\t", $3);
+    for(i=4;i<=NF;i++){
+      printf(" %s", $i);
+    }
+    printf("\n");
+  }'
+}
+
+getversion()
+{
+   cmd="$1"
+   $cmd -V 2>&1 | {
+     read name version
+     echo $version
+   }
+}
+
+
+find_python()
+{
+ min_version="$1"
+ save_ifs="$IFS"
+ IFS=:
+ v2_python=
+ for pathdir in $PATH
+ do
+   IFS="$save_ifs"
+   for f in "$pathdir"/python*
+   do
+     v="`getversion \"$f\"`";
+     case "$v" in
+       3.*) echo "$f"; return;;
+       2.*) v2_python="$f";;
+    esac
+  done
+ done
+ if [ "$min_version" == '2' ]; then
+    if [ "x$v2_python" != 'x' ]; then
+       echo "$v2_python"
+       return
+    fi
+    echo "Unable to find any version of Python." 1>&2
+    exit 1
+ fi
+ echo "Unable to find a 3.x version of Python." 1>&2
+ exit 1
+}
+
+
+if [ "x$1" = 'x--list' -o "x$1" = "xlist" ]; then
+   list_subcommands
+   exit 0
+fi
+
+subcmd="$1"
+shift
+subcmd_args="$@"
+
+cmdinfo=`find_sub_cmd "$subcmd"`
+[ "x$cmdinfo" = 'x' ] && {
+  echo "$0: Unknown Jaudit subcommand '$subcmd'" 1>&2
+  exit 1
+}
+
+set -- $cmdinfo
+
+name="$1"
+ext="$2"
+mod="$3"
+dep="$4"
+
+set_python_path=0
+
+case "$ext" in
+  
+   -) interp='';
+      ext="";;
+      
+   py3) interp=`find_python 3`;
+        [ "x$interp" = 'x' ] && exit 1;
+        ext=".py";
+	set_python_path=1;;
+	
+   py) interp=`find_python 2`;
+        [ "x$interp" = 'x' ] && exit 1;
+        ext=".py";
+	set_python_path=1;;
+	
+   *) interp='';
+      ext=".$ext";;
+      
+esac
+
+if [ $set_python_path -eq 1 ]; then
+   case "$PYTHONPATH" in
+    "") PYTHONPATH="$top";;
+    *) PYTHONPATH="$top":"$PYTHONPATH";;
+   esac
+   export PYTHONPATH
+fi
+
+
+case "$mod" in
+  -) sdir="$scmd_dir";;
+  python) sdir="jaudit.python/scmd";;
+  data) sdir="jaudit.data/scmd";;
+  builds) sdir="jaudit.pybuilds/scmd";;
+  auto) sdir="jaudit.auto/scmd";;
+  test) sdir="jaudit.test/scmd";;
+  *) echo "Unknown submodule $mod for 'run' subcommand." 1>&2;
+     exit 1;;
+esac
+
+if [ "x$dep" != 'x-' ]; then
+     "$prog" submodules check_installed "$dep" || exit 1
+fi
+
+case $interp in
+    "") exec "$sdir/$name$ext" $subcmd_args; exit $?;;
+    *) exec "$interp" "$sdir/$name$ext" $subcmd_args; exit $?;;
+esac
+
+

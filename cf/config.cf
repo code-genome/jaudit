@@ -1,0 +1,7 @@
+#
+# Configuration values for top level Jaudit tools
+#
+# The variable $JAUDIT is set automatically to the top level
+# directory of Jaudit.
+#
+CVE_DATA_DIRECTORY=$JAUDIT/cve

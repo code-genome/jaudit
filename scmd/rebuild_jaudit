@@ -1,0 +1,94 @@
+#!/bin/sh
+
+#
+# This code is part of the Jaudit utilty.
+#
+# (C) Copyright IBM 2023.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+#
+
+dirname=`dirname $0`
+top=`realpath -L $dirname/..`
+
+$top/bin/run submodules check_installed python data || exit 1
+
+rebuild_config=0
+
+enabled_analytics=""
+eys=""
+
+disabled_apps=
+das=""
+dopt=""
+
+enabled_apps=
+eas=""
+eops=""
+
+include_tables=0
+
+output_file_name="bin/jaudit.py"
+output_file="$top/$output_file_name"
+
+analytic_table=
+
+while [ $# -gt 0 ];
+do
+   arg="$1"
+   shift
+   case "$arg" in
+   --include-table) include_tables=1; rebuild_config=1;;
+   --use-table) analytic_table="$1"; shift;;
+   -a|--analytic) enabled_analytics="${enabled_analytics}${eys}$1"; eys=','; shift; rebuild_config=1;;
+   -d|--disable) disabled_apps="${disabled_apps}${das}$1"; das=","; dopt="-d"; shift; rebuild_config=1;;
+   -e|--enable) enabled_apps="${enabled_apps}${eas}$1"; eas=","; eopt="-e"; shift; rebuild_config=1;;
+   -o|--output) output_file="$1"; output_file_name="$1"; shift;;
+   *) echo "Unknown option $arg." 1>&2 ; exit 1;;
+   esac
+done
+
+if [ $rebuild_config -eq 1 -a "x$analytic_table" != 'x' ]; then
+   echo "Can not both rebuild config and specify table to use." 1>&2
+   exit 1
+fi
+
+[ "x$enabled_analytics" = 'x' ] && enabled_analytics="jar-name,jar-digest,jar-fingerprint"
+
+#
+# Rebuild python jaudit
+#
+
+if [ $rebuild_config -eq 1 ]; then
+  $top/bin/run submodules check_installed data || exit 1
+fi
+
+{
+  cat <<EOF
+#
+# This is an generated file.  Do not edit.
+#
+class ConfigurationData:
+EOF
+
+ echo -n "    analytic_data = "
+
+ if [ $rebuild_config -eq 1 ]; then
+   $top/bin/run create-tables -a $enabled_analytics $eopt $enabled_apps $dopt $disabled_apps || exit 1
+   
+ elif [ "x$analytic_table" != 'x' ]; then
+    $top/bin/run compact-table < "$analytic_table"
+ else
+    echo "None"
+ fi
+} > $top/lib/configuration.py
+
+$top/bin/run build-py-jaudit -o "$output_file" &&
+  echo "Jaudit build created at $output_file_name";
+

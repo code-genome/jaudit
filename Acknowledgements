@@ -1,0 +1,32 @@
+
+CVE (Common Vulnerability and Exposures):
+
+  https://cve.mitre.org/
+
+  MITRE hereby grants you a perpetual, worldwide, non-exclusive,
+  no-charge, royalty-free, irrevocable copyright license to reproduce,
+  prepare derivative works of, publicly display, publicly perform,
+  sublicense, and distribute Common Vulnerabilities and Exposures
+  (CVE®). Any copy you make for such purposes is authorized provided
+  that you reproduce MITRE's copyright designation and this license in
+  any such copy.
+
+NVD (National Vulnerability Database):
+
+  https://nvd.nist.gov/vuln/
+
+  This product uses the NVD API but is not endorsed or certified by the NVD.
+
+CISA KEV:
+
+  https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+
+
+EPSS (Exploit Prediction Scoring System):
+
+  https://www.first.org/epss
+
+  Jay Jacobs, Sasha Romanosky, Benjamin Edwards, Michael Roytman,
+  Idris Adjerid, (2021), Exploit Prediction Scoring System, Digital
+  Threats Research and Practice, 2(3)
+

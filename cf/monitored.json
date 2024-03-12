@@ -1,0 +1,158 @@
+{
+    "instructions": {
+	"enabled": false,
+	"description": [
+	    "Each key in this dictionary is the base name of",
+	    "a Java library/package which is to be monitored.  The",
+	    "following keys allow configuration of the entry:",
+	    
+	    "enabled: true/false    -- Should this entry be used",
+	    "vendor: string         -- (Required) The vendor name as used in CVE records",
+	    "cve-name: string       -- The product name as used in CVE records.  If",
+            "                          not present, the library/package name will be used.",
+	    "version: object        -- Used to distinguish specific name when the name",
+            "                          has changed over time.  See the log4j examples.",
+            "start: version    -- The earliest version of this library/package",
+            "end: version      -- The last version of this library/package",
+
+	    "match: [patterns]      -- Additional list of regexes for extracting",
+            "                          version information from jar file names. All",
+            "                          will use these as well (where 'name' is the",
+            "                          name of the library/package):",
+    
+   	    "   (name-[0-9][0-9\\.]*)\\.jar$",
+	    "   (name-[0-9][0-9\\.]*-?rc-?[0-9]*)\\.jar$",
+	    "   (name-[0-9][0-9\\.]*-?alpha-?[0-9]*)\\.jar$",
+	    "   (name-[0-9][0-9\\.]*-?beta-?[0-9]*)\\.jar$",
+
+            "                   The patterns in the list consist of entries",
+            "                   with one required field and one optional",
+            "                   field:",
+
+            "regex: string       -- Regular expression to match and capture info",
+            "format: string      -- (Optional) format string to construct the",
+            "                       version string.  '%digit' are replaced by",
+            "                      the corresponding capture information.  The",
+            "                      default format is '%1'."
+	]
+    },
+    
+    "log4j-core": {
+	"id": "log4j",
+	"enabled": true,
+	"vendor": "apache",
+	"cve-name": "log4j",
+	"package": "org/apache/logging/log4j/core/",
+	"version": {
+	    "start": "2.0"
+	}
+    },
+
+    "log4j": {
+	"enabled": true,
+	"vendor": "apache",
+	"package": "org/apache/log4j/",
+	"version": {
+	    "end": "1.3.3"
+	}
+    },
+
+    "apache-chainsaw": {
+	"id": "log4j",
+	"enabled": true,
+	"vendor": "apache",
+	"cve-name": "chainsaw",
+	"package": "org/apache/log4j/chainsaw"
+    },
+
+    "apache-log4j-extras": {
+	"id": "log4j",
+	"enabled": true,
+	"vendor": "apache"
+    },
+
+    "elasticsearch": {
+	"enabled": true,
+	"vendor": "elastic",
+	"package": "org/elasticsearch/"
+    },
+
+    "gt-main": {
+	"id": "geotools",
+	"enabled": true,
+	"vendor": "geotools",
+	"cve-name": "geotools",
+	"package": "org/geotools",
+	"match": [
+	    {
+		"regex": "^(gt-main-[0-9][0-9\\.]*-?m-?[0-9]*)\\.jar$"
+	    },
+	    {
+		"regex": "^(gt-main-[0-9][0-9\\.]*)-SNAPSHOT\\.jar$"
+	    }
+
+	]
+    },
+
+    "jackson-databind": {
+	"enabled": true,
+	"vendor": "fasterxml",
+	"cve-name": "jackson-databind",
+	"package": "com/fasterxml/jackson/databind",
+	"match": [
+	    {
+		"regex": "^(jackson-databind-[0-9][0-9\\.]*[0-9]-[0-9][0-9]*)\\.jar$",
+		"format": "%1"
+	    },
+	    {
+		"regex": "^(jackson-databind-[0-9][0-9\\.]*[0-9])-?(rc-?[0-9]*)\\.jar$",
+		"format": "%1-%2"
+	    },
+	    {
+		"regex": "^(jackson-databind-[0-9][0-9\\.]*[0-9])-?(pr-?[0-9]*)\\.jar$",
+		"format": "%1-%2"
+	    },
+	    {
+		"regex": "^(jackson-databind-[0-9][0-9\\.]*[0-9])\\.?(rc-?[0-9]*)\\.jar$",
+		"format": "%1-%2"
+	    },
+	    {
+		"regex": "^(jackson-databind-[0-9][0-9\\.]*[0-9])\\.?(pr-?[0-9]*)\\.jar$",
+		"format": "%1-%2"
+	    }
+	]
+    },
+
+    "commons-compress": {
+	"enabled": true,
+	"vendor": "apache",
+	"cve-name": "commons_compress",
+	"package": "org/apache/commons/compress"
+    },
+
+    "gson": {
+	"enabled": true,
+	"vendor": "google",
+	"package": "com/google/gson"
+    },
+
+    "guava": {
+	"enabled": true,
+	"vendor": "google",
+	"package": "com/google/common",
+	"match": [
+	    {
+		"regex": "^(guava-[0-9][0-9\\.]*)-jre\\.jar$"
+	    },
+	    {
+		"regex": "^(guava-[0-9][0-9\\.]*)-android\\.jar$"
+	    },
+	    {
+		"regex": "^(guava-[0-9][0-9\\.]*)-(rc-?[0-9]*)-android\\.jar$"
+	    },
+	    {
+		"regex": "^(guava-r[0-9][0-9\\.]*)\\.jar$"
+	    }
+	]
+    }
+}

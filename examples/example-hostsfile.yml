@@ -1,0 +1,18 @@
+all:
+  hosts:
+    localhost:
+       ansible_connection: local
+    server1.example.com:
+    server2.example.com:
+    database1.example.com:
+    database2.example.com:
+    
+  children:
+    servers:
+      hosts:
+        server1.example.com:
+	server2.example.com:
+    db:
+      hosts:
+        database1.example.com:
+	database2.example.com:

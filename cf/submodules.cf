@@ -1,0 +1,32 @@
+{
+   "auto": {
+       "description": "Automatically download and process new jar files and CVE data.",
+       "url":  "git@github.ibm.com:software-genome/jaudit.auto.git",
+       "name": "jaudit.auto"
+   },
+
+   "data": {
+       "description": "Precomputed fingerprints and hashes for various Java libraries and applications.",
+       "url":  "git@github.ibm.com:software-genome/jaudit.data.git",
+       "name": "jaudit.data"
+   },
+
+   "python": {
+       "description": "Python source for rebuilding Jaudit's 'jaudit.py'.",
+       "url":  "git@github.ibm.com:software-genome/jaudit.python.git",
+       "name": "jaudit.python"
+   },
+
+   "builder": {
+       "description": "Tooling to automatically rebuild Jaudit.",
+       "url":  "git@github.ibm.com:software-genome/jaudit.builder.git",
+       "name": "jaudit.builder",
+       "requires": ["builds", "python"]
+   },
+
+   "builds": {
+       "description": "Prebuilt Jaudit builds for deployment.",
+       "url":  "git@github.ibm.com:software-genome/jaudit.pybuilds.git",
+       "name": "jaudit.pybuilds"
+   }
+}

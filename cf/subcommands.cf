@@ -1,0 +1,15 @@
+add-jars       add_jar         py3 - data  Add jar files to Jaudit data set
+ansible-jaudit ansible-jaudit  py3 - -     Run jaudit with ansible
+cve-annotate   cve_annotate    py3 - -     Annotate output of Jaudit with CVE information
+cve-download   cve_download    py3 - -     Incrementally download CVE information
+cve-extract    cve_extract     py3 - -     Extract relevant CVE records from downloaded CVE
+datasets       datasets        py3 - data  List information about available data sets
+rebuild-jaudit rebuild_jaudit  -   - -     Create a new build of Jaudit
+report         report          py3 - -     Jaudit report generator
+submodules     submodules      py3 - -     Manage git sub-modules
+create-tables   create_table    py3 - -    Create analytic data tables for Jaudit
+compact-table  compact_table   py3 - -     !Remove white space from analytic tables.
+build-py-jaudit build-jaudit   -   python python  !Build python jaudit
+download-jars  auto-download-jars py3 auto auto,data Check for and download jar files.
+rescan-jars    rescan_jars     py3 auto data,auto Rescan download jar files.
+make-variants  make_variants   -  builds python,data Create variant builds of Jaudit

@@ -1,0 +1,79 @@
+{
+    "log4j": {
+        "description": "Apache Log4J v1 & v2, plus Apache Chainsaw",
+        "dataset": "log4j",
+        "counts": {
+            "versions": 82,
+            "jar-digests": 82,
+            "jar-fingerprints": 81,
+            "class-digests": 15489,
+            "class-fingerprints": 6513
+        }
+    },
+    "elasticsearch": {
+        "description": "Elastic Search",
+        "dataset": "elasticsearch",
+        "counts": {
+            "versions": 372,
+            "jar-digests": 371,
+            "jar-fingerprints": 370,
+            "class-digests": 231678,
+            "class-fingerprints": 110857
+        }
+    },
+    "geotools": {
+        "description": "Geotools (gt-main)",
+        "dataset": "geotools",
+        "counts": {
+            "versions": 232,
+            "jar-digests": 204,
+            "jar-fingerprints": 190,
+            "class-digests": 16181,
+            "class-fingerprints": 5425
+        }
+    },
+    "gson": {
+        "description": "Google GSON",
+        "dataset": "gson",
+        "counts": {
+            "versions": 36,
+            "jar-digests": 35,
+            "jar-fingerprints": 33,
+            "class-digests": 2884,
+            "class-fingerprints": 1184
+        }
+    },
+    "guava": {
+        "description": "Google Guava",
+        "dataset": "guava",
+        "counts": {
+            "versions": 84,
+            "jar-digests": 110,
+            "jar-fingerprints": 103,
+            "class-digests": 44055,
+            "class-fingerprints": 8714
+        }
+    },
+    "jackson-databind": {
+        "description": "FasterXML jackson-databind",
+        "dataset": "jackson-databind",
+        "counts": {
+            "versions": 190,
+            "jar-digests": 190,
+            "jar-fingerprints": 190,
+            "class-digests": 12419,
+            "class-fingerprints": 4664
+        }
+    },
+    "commons-compress": {
+        "description": "Apache Commons Compress",
+        "dataset": "commons-compress",
+        "counts": {
+            "versions": 28,
+            "jar-digests": 28,
+            "jar-fingerprints": 27,
+            "class-digests": 3775,
+            "class-fingerprints": 1613
+        }
+    }
+}
